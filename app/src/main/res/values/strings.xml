@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SimpleTaxApp</string>
+    <string name="income_after_tax">Income After Tax</string>
+    <string name="input_field_label">Enter Salary</string>
+</resources>
