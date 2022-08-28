@@ -3,18 +3,20 @@ package com.kay.simpletaxapp.component
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AttachMoney
 import androidx.compose.runtime.Composable
@@ -22,13 +24,20 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.kay.simpletaxapp.R
 import com.kay.simpletaxapp.ui.theme.EXTRA_LARGE_PADDING
 import com.kay.simpletaxapp.ui.theme.LARGE_PADDING
@@ -37,7 +46,7 @@ import com.kay.simpletaxapp.ui.theme.TOP_HEADER_HEIGHT
 import com.kay.simpletaxapp.ui.theme.topHeaderBackground
 import com.kay.simpletaxapp.ui.theme.topHeaderTextColor
 
-
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TaxForm(
     modifier: Modifier = Modifier,
@@ -52,15 +61,26 @@ fun TaxForm(
         salaryAmount.value.trim()
             .isNotEmpty() /* <- Returns a boolean "if it's not empty it will return true"*/
     }
-    SalaryInputField(inputValueState = salaryAmount, labelId = stringResource(id = R.string.input_field_label))
+    val keyboardController = LocalSoftwareKeyboardController.current
 
+    SalaryInputField(
+        inputValueState = salaryAmount,
+        labelId = stringResource(id = R.string.input_field_label),
+        enabled = true,
+        isSingleLine = true,
+        onAction = KeyboardActions {
+            if (!validState) return@KeyboardActions
+            // Todo - onValuedChanged
+            onValChange(salaryAmount.value.trim())
+            keyboardController?.hide()
+        }
+    )
 }
 
 @Composable
 fun TopHeader(
     /*TaxAfterIncome*/
 ) {
-
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -95,7 +115,12 @@ fun SalaryInputField(
     modifier: Modifier = Modifier,
     inputValueState: MutableState<String>,
     labelId: String,
-    ) {
+    isSingleLine: Boolean,
+    enabled: Boolean,
+    keyboardType: KeyboardType = KeyboardType.Number,
+    imeAction: ImeAction = ImeAction.Next,
+    onAction: KeyboardActions = KeyboardActions.Default
+) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
@@ -121,11 +146,72 @@ fun SalaryInputField(
                         contentDescription = "Money Icon"
                     )
                 },
+                textStyle = TextStyle(
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colors.onBackground
+                ),
+                singleLine = isSingleLine,
+                enabled = enabled,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = keyboardType,
+                    imeAction = imeAction
+                ),
+                keyboardActions = onAction
             )
         }
     }
 }
 
+@Composable
+fun TaxInfo(
+    modifier: Modifier = Modifier
+) {
+    Column {
+        Row(
+            modifier = modifier.padding(start = MEDIUM_PADDING, end = MEDIUM_PADDING),
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Text(
+                modifier = modifier.weight(1f),
+                text = "Tax Pay",
+                fontWeight = FontWeight.ExtraBold,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                modifier = modifier.weight(1f),
+                text = "Tax Percentage",
+                fontWeight = FontWeight.ExtraBold,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                modifier = modifier.weight(1f),
+                text = "Net",
+                fontWeight = FontWeight.ExtraBold,
+                textAlign = TextAlign.Center
+            )
+        }
+        Row(
+            modifier = modifier.padding(MEDIUM_PADDING),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                modifier = modifier.weight(1f),
+                text = "$$$",
+                textAlign = TextAlign.Center
+            )
+            Text(
+                modifier = modifier.weight(1f),
+                text = "%%%",
+                textAlign = TextAlign.Center
+            )
+            Text(
+                modifier = modifier.weight(1f),
+                text = "0",
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
 
 @Preview
 @Composable
@@ -142,5 +228,13 @@ fun SalaryInputFieldPreview() {
     SalaryInputField(
         inputValueState = totalSalary,
         labelId = "Enter the salary",
+        enabled = true,
+        isSingleLine = true
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TaxInfoPreview() {
+    TaxInfo()
 }
