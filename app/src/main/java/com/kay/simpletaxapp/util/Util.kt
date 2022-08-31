@@ -1,6 +1,6 @@
 package com.kay.simpletaxapp.util
 
-fun calculateSalaryAfterTax(
+fun calculateTotalTax(
     totalSalary: Double, /* salaryAmount */
     percentage: Int
 ): Double {
@@ -11,13 +11,13 @@ fun calculateSalaryAfterTax(
     else 0.0
 }
 
-fun calculateAmountAfterTax(
+fun calculateSalaryAfterTax(
     totalSalary: Double,
     percentage: Int
 ): Double {
-    val salaryAfterTax = calculateSalaryAfterTax(
+    val salaryAfterTax = calculateTotalTax(
         totalSalary = totalSalary,
         percentage = percentage
-    ) - percentage
-    return (salaryAfterTax)
+    )
+    return (totalSalary - salaryAfterTax)
 }

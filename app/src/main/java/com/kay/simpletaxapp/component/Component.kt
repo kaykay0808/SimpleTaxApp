@@ -3,6 +3,7 @@ package com.kay.simpletaxapp.component
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,13 +48,18 @@ import com.kay.simpletaxapp.ui.theme.MEDIUM_PADDING
 import com.kay.simpletaxapp.ui.theme.TOP_HEADER_HEIGHT
 import com.kay.simpletaxapp.ui.theme.topHeaderBackground
 import com.kay.simpletaxapp.ui.theme.topHeaderTextColor
+import com.kay.simpletaxapp.util.calculateSalaryAfterTax
+import com.kay.simpletaxapp.util.calculateTotalTax
+import java.text.NumberFormat
+import java.util.Locale
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TaxForm(
     modifier: Modifier = Modifier,
     totalSalaryAmountState: MutableState<String>,
-    // totalIncomeAfterTax: MutableState<Double>,
+    taxPay: MutableState<Double>,
+    totalIncomeAfterTax: MutableState<Double>,
     sliderPositionState: MutableState<Float>,
     percentage: Int,
     onValChange: (String) -> Unit
@@ -65,7 +71,7 @@ fun TaxForm(
     }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    TopHeader()
+    TopHeader(incomeAfterTax = totalIncomeAfterTax.value)
 
     SalaryInputField(
         inputValueState = totalSalaryAmountState,
@@ -79,18 +85,34 @@ fun TaxForm(
             keyboardController?.hide()
         }
     )
-    TaxInfo(percentage = percentage)
-    TheSlider(
-        // totalSalaryAmountState = totalSalaryAmountState,
-        sliderPositionState = sliderPositionState,
-        percentage = percentage
+    TaxInfo(
+        totalSalaryAmountState = totalSalaryAmountState,
+        totalIncomeAfterTax = totalIncomeAfterTax,
+        taxPay = taxPay,
+        percentage = percentage,
+
     )
+    if (validState) {
+        TheSlider(
+            // totalSalaryAmountState = totalSalaryAmountState,
+            sliderPositionState = sliderPositionState,
+            percentage = percentage,
+            taxPay = taxPay,
+            totalSalaryAmountState = totalSalaryAmountState,
+            totalIncomeAfterTax = totalIncomeAfterTax
+        )
+    } else {
+        Box {
+            // show a sad empty box
+        }
+    }
 }
 
 @Composable
 fun TopHeader(
-    /*TaxAfterIncome*/
+    incomeAfterTax: Double = 0.0
 ) {
+    val totalAfterTaxFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("nb-NO")).format(incomeAfterTax)/*"%.2f".format(incomeAfterTax)*/
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -111,7 +133,7 @@ fun TopHeader(
                 style = MaterialTheme.typography.h5
             )
             Text(
-                text = "$ 1000000",
+                text = "$totalAfterTaxFormat",
                 color = MaterialTheme.colors.topHeaderTextColor,
                 style = MaterialTheme.typography.h4,
                 fontWeight = FontWeight.ExtraBold
@@ -175,8 +197,12 @@ fun SalaryInputField(
 @Composable
 fun TaxInfo(
     modifier: Modifier = Modifier,
+    totalSalaryAmountState: MutableState<String>,
+    totalIncomeAfterTax: MutableState<Double>,
+    taxPay: MutableState<Double>,
     percentage: Int
 ) {
+    val taxPayFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("nb-NO")).format(taxPay)
     Column {
         Row(
             modifier = modifier.padding(start = MEDIUM_PADDING, end = MEDIUM_PADDING),
@@ -207,9 +233,10 @@ fun TaxInfo(
         ) {
             Text(
                 modifier = modifier.weight(1f),
-                text = "$$$",
+                text = "$ ${taxPay.value}",
                 textAlign = TextAlign.Center
             )
+            Log.d("totalIncomeValue","total income after tax is: ${totalIncomeAfterTax.value}")
             Text(
                 modifier = modifier.weight(1f),
                 text = "$percentage %",
@@ -217,7 +244,7 @@ fun TaxInfo(
             )
             Text(
                 modifier = modifier.weight(1f),
-                text = "0",
+                text = "-" +totalSalaryAmountState.value,
                 textAlign = TextAlign.Center
             )
         }
@@ -226,8 +253,9 @@ fun TaxInfo(
 
 @Composable
 fun TheSlider(
-    // totalSalaryAmountState: MutableState<String>,
-    // totalIncomeAfterTax: MutableState<Double>,
+    totalSalaryAmountState: MutableState<String>,
+    totalIncomeAfterTax: MutableState<Double>,
+    taxPay: MutableState<Double>,
     sliderPositionState: MutableState<Float>,
     percentage: Int
 ) {
@@ -241,6 +269,16 @@ fun TheSlider(
                 Log.d("SliderChange", "BillForm: $newVal")
                 //totalSalaryAmountState.value =
                 sliderPositionState.value = newVal
+                totalIncomeAfterTax.value =
+                    calculateSalaryAfterTax(
+                        totalSalary = totalSalaryAmountState.value.toDouble(),
+                        percentage = percentage
+                    )
+                taxPay.value =
+                    calculateTotalTax(
+                        totalSalary = totalSalaryAmountState.value.toDouble(),
+                        percentage = percentage
+                    )
             }
         )
     }
@@ -269,7 +307,21 @@ fun SalaryInputFieldPreview() {
 @Preview(showBackground = true)
 @Composable
 fun TaxInfoPreview() {
-    TaxInfo(percentage = 10)
+    val totalSalaryAmountState = remember {
+        mutableStateOf("")
+    }
+    val totalIncomeAfterTax = remember {
+        mutableStateOf(0.0)
+    }
+    val taxAmountState = remember {
+        mutableStateOf(0.0)
+    }
+    TaxInfo(
+        totalSalaryAmountState = totalSalaryAmountState,
+        totalIncomeAfterTax = totalIncomeAfterTax,
+        taxPay = taxAmountState,
+        percentage = 10
+    )
 }
 
 @Preview
@@ -278,12 +330,20 @@ fun TheSliderPreview() {
     val totalSalaryAmountState = remember {
         mutableStateOf("")
     }
+    val totalIncomeAfterTax = remember {
+        mutableStateOf(0.0)
+    }
+    val taxAmountState = remember {
+        mutableStateOf(0.0)
+    }
     val sliderPositionState = remember {
         mutableStateOf(0f)
     }
     TheSlider(
+        totalSalaryAmountState = totalSalaryAmountState,
+        totalIncomeAfterTax = totalIncomeAfterTax,
         sliderPositionState = sliderPositionState,
-        //totalSalaryAmountState = totalSalaryAmountState,
+        taxPay = taxAmountState,
         percentage = 1
     )
 }

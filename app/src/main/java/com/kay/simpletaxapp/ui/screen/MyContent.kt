@@ -36,6 +36,8 @@ fun MainContent() {
         // TaxForm
         TaxForm(
             totalSalaryAmountState = totalSalaryAmountState,
+            taxPay = taxAmountState,
+            totalIncomeAfterTax = totalIncomeAfterTax,
             sliderPositionState = sliderPositionState,
             percentage = salaryPercentage
         ) {}
