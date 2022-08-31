@@ -16,11 +16,9 @@ val LightGray = Color(0xFFFCFCFC)
 val MediumGray = Color(0xFF9C9C9C)
 val DarkGray = Color(0xFF141414)
 
-
-
 val Colors.topHeaderBackground: Color
     @Composable
-get() = if (isLight) Green else Black
+    get() = if (isLight) Green else Black
 
 val Colors.topHeaderTextColor: Color
     @Composable

@@ -90,7 +90,6 @@ fun TaxForm(
         totalIncomeAfterTax = totalIncomeAfterTax,
         taxPay = taxPay,
         percentage = percentage,
-
     )
     if (validState) {
         TheSlider(
@@ -112,7 +111,8 @@ fun TaxForm(
 fun TopHeader(
     incomeAfterTax: Double = 0.0
 ) {
-    val totalAfterTaxFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("nb-NO")).format(incomeAfterTax)/*"%.2f".format(incomeAfterTax)*/
+    val totalAfterTaxFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("nb-NO"))
+        .format(incomeAfterTax)/*"%.2f".format(incomeAfterTax)*/
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -133,7 +133,7 @@ fun TopHeader(
                 style = MaterialTheme.typography.h5
             )
             Text(
-                text = "$totalAfterTaxFormat",
+                text = totalAfterTaxFormat,
                 color = MaterialTheme.colors.topHeaderTextColor,
                 style = MaterialTheme.typography.h4,
                 fontWeight = FontWeight.ExtraBold
@@ -202,7 +202,6 @@ fun TaxInfo(
     taxPay: MutableState<Double>,
     percentage: Int
 ) {
-    val taxPayFormat = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("nb-NO")).format(taxPay)
     Column {
         Row(
             modifier = modifier.padding(start = MEDIUM_PADDING, end = MEDIUM_PADDING),
@@ -236,7 +235,7 @@ fun TaxInfo(
                 text = "$ ${taxPay.value}",
                 textAlign = TextAlign.Center
             )
-            Log.d("totalIncomeValue","total income after tax is: ${totalIncomeAfterTax.value}")
+            Log.d("totalIncomeValue", "total income after tax is: ${totalIncomeAfterTax.value}")
             Text(
                 modifier = modifier.weight(1f),
                 text = "$percentage %",
@@ -244,7 +243,7 @@ fun TaxInfo(
             )
             Text(
                 modifier = modifier.weight(1f),
-                text = "-" +totalSalaryAmountState.value,
+                text = "-" + totalSalaryAmountState.value,
                 textAlign = TextAlign.Center
             )
         }
@@ -267,7 +266,6 @@ fun TheSlider(
             value = sliderPositionState.value,
             onValueChange = { newVal ->
                 Log.d("SliderChange", "BillForm: $newVal")
-                //totalSalaryAmountState.value =
                 sliderPositionState.value = newVal
                 totalIncomeAfterTax.value =
                     calculateSalaryAfterTax(
