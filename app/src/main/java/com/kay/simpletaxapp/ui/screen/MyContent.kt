@@ -9,42 +9,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.kay.simpletaxapp.component.TaxForm
 import com.kay.simpletaxapp.ui.theme.LARGE_PADDING
+import com.kay.simpletaxapp.ui.viewmodel.TaxViewModel
+import com.kay.simpletaxapp.util.sliderToPercentage
+import kotlin.math.roundToInt
 
 @Composable
-fun MainContent() {
+fun MainContent( taxViewModel: TaxViewModel) {
 
-    val totalSalaryAmountState = remember {
-        mutableStateOf("")
-    }
-
-    val taxAmountState = remember {
-        mutableStateOf(0.0)
-    }
-
-    val totalIncomeAfterTax = remember {
-        mutableStateOf(0.0)
-    }
-
-    val sliderPositionState = remember {
-        mutableStateOf(0f)
-    }
-
-    val salaryPercentage = (sliderPositionState.value * 100).toInt()
+    val viewState = taxViewModel.viewState
+    val sliderPercentage = sliderToPercentage(viewState.sliderPositionState)
 
     Column(modifier = Modifier.padding(all = LARGE_PADDING)) {
         // TaxForm
         TaxForm(
-            totalSalaryAmountState = totalSalaryAmountState,
-            taxPay = taxAmountState,
-            totalIncomeAfterTax = totalIncomeAfterTax,
-            sliderPositionState = sliderPositionState,
-            percentage = salaryPercentage
+            taxViewModel = taxViewModel,
+            viewState = viewState,
+            sliderPositionState = viewState.sliderPositionState,
+            percentage = sliderPercentage
         ) {}
     }
 }
 
-@Preview
-@Composable
-fun MainContentPreview() {
-    MainContent()
-}
