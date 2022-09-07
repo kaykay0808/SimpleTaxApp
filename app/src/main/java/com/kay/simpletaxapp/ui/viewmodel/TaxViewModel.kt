@@ -1,5 +1,6 @@
 package com.kay.simpletaxapp.ui.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -23,7 +24,7 @@ class TaxViewModel : ViewModel() {
         viewState = copy(viewState)
     }
 
-    private fun calculateTotalTax(
+    fun calculateTotalTax(
         totalSalary: Double, /* salaryAmount */
         percentage: Int
     ): Double {
@@ -34,7 +35,7 @@ class TaxViewModel : ViewModel() {
         else 0.0
     }
 
-    private fun calculateSalaryAfterTax(
+    fun calculateSalaryAfterTax(
         totalSalary: Double,
         percentage: Int
     ): Double {
@@ -48,7 +49,7 @@ class TaxViewModel : ViewModel() {
     // private fun sliderToPercentage(value: Float): Int = (value *100).roundToInt()
 
     fun onSliderValueChange(newVal: Float) {
-        val tax = calculateTotalTax(
+        val taxPay = calculateTotalTax(
             totalSalary = viewState.totalSalaryAmountState.toDouble(),
             percentage = sliderToPercentage(newVal)
         )
@@ -59,17 +60,20 @@ class TaxViewModel : ViewModel() {
         render {
             copy(
                 totalSalaryAmountState = salary.toString(),
-                taxAmountState = tax,
+                taxAmountState = taxPay,
                 sliderPositionState = newVal,
             )
         }
+        Log.d("SliderNewVal", " \ntaxPay: $taxPay \nsalary: $salary \nNewVal: $newVal ")
     }
 
     fun onInputValueChange(newInputVal: String) {
         render {
             copy(
-                totalSalaryAmountState = newInputVal
+                totalSalaryAmountState = newInputVal,
             )
         }
+        // note: input value is correct until slider is moved.
+        Log.d("onInputChange"," \nNewInputVal: $newInputVal")
     }
 }

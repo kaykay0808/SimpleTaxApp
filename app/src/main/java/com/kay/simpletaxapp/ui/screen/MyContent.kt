@@ -24,7 +24,10 @@ fun MainContent( taxViewModel: TaxViewModel) {
         TaxForm(
             taxViewModel = taxViewModel,
             viewState = viewState,
+            totalSalaryAmountState = viewState.totalSalaryAmountState,
             sliderPositionState = viewState.sliderPositionState,
+            totalIncomeAfterTax = viewState.totalIncomeAfterTax,
+            taxPay = viewState.taxAmountState,
             percentage = sliderPercentage
         ) {}
     }
