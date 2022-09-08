@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             SimpleTaxAppTheme {
                 // A surface container using the 'background' color from the theme
-                MyApp (taxViewModel = taxViewModel){
+                MyApp(taxViewModel = taxViewModel) {
                     MainContent(taxViewModel = taxViewModel)
                 }
             }
@@ -45,10 +45,11 @@ fun MyApp(
     }
 }
 
-/*@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    MyApp {
-        MainContent()
+    val taxViewModel = TaxViewModel()
+    MyApp(taxViewModel = taxViewModel) {
+        MainContent(taxViewModel = taxViewModel)
     }
-}*/
+}

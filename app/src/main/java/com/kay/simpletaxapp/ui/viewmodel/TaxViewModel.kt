@@ -1,6 +1,5 @@
 package com.kay.simpletaxapp.ui.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,21 +10,13 @@ import com.kay.simpletaxapp.util.sliderToPercentage
 class TaxViewModel : ViewModel() {
     var viewState by mutableStateOf(TaxViewState())
         private set
-    /*private val totalSalaryAmountState: MutableState<String> = mutableStateOf("")
-    private val taxAmountState: MutableState<Double> = mutableStateOf(0.0)
-    private val totalIncomeAfterTax: MutableState<Double> = mutableStateOf(0.0)
-    private val sliderPositionState: MutableState<Float> = mutableStateOf(0f)
-    
-    fun getTotalSalaryAmountState(): String {
-        return totalSalaryAmountState.value
-    }*/
 
     private fun render(copy: TaxViewState.() -> TaxViewState) {
         viewState = copy(viewState)
     }
 
-    fun calculateTotalTax(
-        totalSalary: Double, /* salaryAmount */
+    private fun calculateTotalTax(
+        totalSalary: Double,
         percentage: Int
     ): Double {
         return if (
@@ -35,7 +26,7 @@ class TaxViewModel : ViewModel() {
         else 0.0
     }
 
-    fun calculateSalaryAfterTax(
+    private fun calculateSalaryAfterTax(
         totalSalary: Double,
         percentage: Int
     ): Double {
@@ -46,25 +37,22 @@ class TaxViewModel : ViewModel() {
         return (totalSalary - salaryAfterTax)
     }
 
-    // private fun sliderToPercentage(value: Float): Int = (value *100).roundToInt()
-
     fun onSliderValueChange(newVal: Float) {
         val taxPay = calculateTotalTax(
             totalSalary = viewState.totalSalaryAmountState.toDouble(),
             percentage = sliderToPercentage(newVal)
         )
-        val salary = calculateSalaryAfterTax(
+        val salaryAfterTax = calculateSalaryAfterTax(
             totalSalary = viewState.totalSalaryAmountState.toDouble(),
             percentage = sliderToPercentage(newVal)
         )
         render {
             copy(
-                totalSalaryAmountState = salary.toString(),
+                totalIncomeAfterTax = salaryAfterTax,
                 taxAmountState = taxPay,
                 sliderPositionState = newVal,
             )
         }
-        Log.d("SliderNewVal", " \ntaxPay: $taxPay \nsalary: $salary \nNewVal: $newVal ")
     }
 
     fun onInputValueChange(newInputVal: String) {
@@ -73,7 +61,5 @@ class TaxViewModel : ViewModel() {
                 totalSalaryAmountState = newInputVal,
             )
         }
-        // note: input value is correct until slider is moved.
-        Log.d("onInputChange"," \nNewInputVal: $newInputVal")
     }
 }
