@@ -13,13 +13,11 @@ import com.kay.simpletaxapp.util.sliderToPercentage
 fun MainScreen(taxViewModel: TaxViewModel) {
 
     val viewState = taxViewModel.viewState
-    val sliderPercentage = sliderToPercentage(viewState.sliderValue)
 
     Column(modifier = Modifier.padding(all = LARGE_PADDING)) {
         TaxForm(
             taxViewModel = taxViewModel,
             viewState = viewState,
-            percentage = sliderPercentage,
         )
     }
 }

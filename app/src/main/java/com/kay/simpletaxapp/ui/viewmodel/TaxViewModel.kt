@@ -10,8 +10,22 @@ class TaxViewModel : ViewModel() {
     var viewState by mutableStateOf(TaxViewState())
         private set
 
-    private fun render(copy: TaxViewState.() -> TaxViewState) {
-        viewState = copy(viewState)
+    var netSalaryString = ""
+    var netSalary = 0.0
+    var incomeAfterTax = 0.0
+    var taxAmount = 0.0
+    var sliderValue = 0.25f
+
+    private fun render() {
+        val taxPercent = sliderToPercentage(sliderValue)
+        viewState = TaxViewState(
+            netSalaryString = netSalaryString,
+            netSalary = netSalary,
+            incomeAfterTax = calculateSalaryAfterTax(netSalary, taxPercent),
+            taxAmount = calculateTotalTax(netSalary, taxPercent),
+            sliderValue = sliderValue,
+            taxPercentage = taxPercent
+        )
     }
 
     private fun calculateTotalTax(
@@ -37,33 +51,22 @@ class TaxViewModel : ViewModel() {
     }
 
     fun onSliderValueChange(newVal: Float) {
-        val taxPay = calculateTotalTax(
-            totalSalary = viewState.netSalary,
-            percentage = sliderToPercentage(newVal)
-        )
-        val salaryAfterTax = calculateSalaryAfterTax(
-            totalSalary = viewState.netSalary,
-            percentage = sliderToPercentage(newVal)
-        )
-        render {
-            copy(
-                incomeAfterTax = salaryAfterTax,
-                taxAmount = taxPay,
-                sliderValue = newVal,
-            )
-        }
+        sliderValue = newVal
+        render()
     }
 
     fun onInputValueChange(newInputVal: String) {
-        render {
-            copy(
-                netSalaryString = newInputVal,
-                netSalary = newInputVal.toDoubleOrNull() ?: 0.0
-            )
-        }
+        netSalaryString = newInputVal
+        netSalary = newInputVal.toDoubleOrNull() ?: 0.0
+        render()
     }
 
     fun onResetInputValueChange() {
-        render { TaxViewState() }
+        netSalaryString = ""
+        netSalary = 0.0
+        incomeAfterTax = 0.0
+        taxAmount = 0.0
+        sliderValue = 0.25f
+        render()
     }
 }

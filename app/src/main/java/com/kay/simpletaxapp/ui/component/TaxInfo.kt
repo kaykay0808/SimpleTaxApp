@@ -19,48 +19,47 @@ import com.kay.simpletaxapp.util.formatCurrency
 fun TaxInfo(
     modifier: Modifier = Modifier,
     viewState: TaxViewState,
-    percentage: Int
 ) {
-    Column {
+    Column(modifier = modifier) {
         Row(
-            modifier = modifier.padding(start = MEDIUM_PADDING, end = MEDIUM_PADDING),
+            modifier = Modifier.padding(start = MEDIUM_PADDING, end = MEDIUM_PADDING),
             horizontalArrangement = Arrangement.Center,
         ) {
             Text(
-                modifier = modifier.weight(1f),
+                modifier = Modifier.weight(1f),
                 text = "Tax Pay",
                 fontWeight = FontWeight.ExtraBold,
                 textAlign = TextAlign.Center
             )
             Text(
-                modifier = modifier.weight(1f),
+                modifier = Modifier.weight(1f),
                 text = "Tax Percentage",
                 fontWeight = FontWeight.ExtraBold,
                 textAlign = TextAlign.Center
             )
             Text(
-                modifier = modifier.weight(1f),
+                modifier = Modifier.weight(1f),
                 text = "Net",
                 fontWeight = FontWeight.ExtraBold,
                 textAlign = TextAlign.Center
             )
         }
         Row(
-            modifier = modifier.padding(MEDIUM_PADDING),
+            modifier = Modifier.padding(MEDIUM_PADDING),
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                modifier = modifier.weight(1f),
+                modifier = Modifier.weight(1f),
                 text = formatCurrency(viewState.taxAmount),
                 textAlign = TextAlign.Center
             )
             Text(
-                modifier = modifier.weight(1f),
-                text = "$percentage %",
+                modifier = Modifier.weight(1f),
+                text = "${viewState.taxPercentage} %",
                 textAlign = TextAlign.Center
             )
             Text(
-                modifier = modifier.weight(1f),
+                modifier = Modifier.weight(1f),
                 text = formatCurrency(viewState.netSalary),
                 textAlign = TextAlign.Center
             )
@@ -73,8 +72,5 @@ fun TaxInfo(
 fun TaxInfoPreview() {
     val taxViewModel = TaxViewModel()
     val viewState = taxViewModel.viewState
-    TaxInfo(
-        viewState = viewState,
-        percentage = 10
-    )
+    TaxInfo(viewState = viewState)
 }

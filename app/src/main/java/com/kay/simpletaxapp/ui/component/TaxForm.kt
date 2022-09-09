@@ -15,7 +15,6 @@ import com.kay.simpletaxapp.ui.viewmodel.TaxViewState
 fun TaxForm(
     viewState: TaxViewState,
     taxViewModel: TaxViewModel,
-    percentage: Int,
 ) {
     // Valid state if totalBillState is not empty
     val validState = remember(viewState.netSalaryString) {
@@ -38,10 +37,7 @@ fun TaxForm(
             keyboardController?.hide()
         }
     )
-    TaxInfo(
-        percentage = percentage,
-        viewState = viewState
-    )
+    TaxInfo(viewState = viewState)
     TaxSlider(
         valueChanged = { newVal -> taxViewModel.onSliderValueChange(newVal) },
         sliderPositionState = viewState.sliderValue,
