@@ -6,11 +6,10 @@ import androidx.compose.material.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
-import com.kay.simpletaxapp.ui.viewmodel.TaxViewModel
 
 @Composable
 fun TaxSlider(
-    viewModel: TaxViewModel,
+    valueChanged: (Float) -> Unit,
     sliderPositionState: Float,
 ) {
     Column(
@@ -19,9 +18,7 @@ fun TaxSlider(
     ) {
         Slider(
             value = sliderPositionState,
-            onValueChange = { newVal ->
-                viewModel.onSliderValueChange(newVal)
-            }
+            onValueChange = valueChanged,
         )
     }
 }
@@ -29,11 +26,8 @@ fun TaxSlider(
 @Preview
 @Composable
 fun TaxSliderPreview() {
-    val taxViewModel = TaxViewModel()
-    val viewState = taxViewModel.viewState
-
     TaxSlider(
-        viewModel = taxViewModel,
-        sliderPositionState = viewState.sliderPositionState,
+        valueChanged = {},
+        sliderPositionState = 25f,
     )
 }

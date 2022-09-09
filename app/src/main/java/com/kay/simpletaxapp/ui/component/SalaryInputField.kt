@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kay.simpletaxapp.R
 import com.kay.simpletaxapp.ui.theme.MEDIUM_PADDING
-import com.kay.simpletaxapp.ui.viewmodel.TaxViewModel
 
 @Composable
 fun SalaryInputField(
@@ -35,7 +34,8 @@ fun SalaryInputField(
     labelId: String,
     isSingleLine: Boolean,
     enabled: Boolean,
-    viewModel: TaxViewModel,
+    valueChanged: (String) -> Unit,
+    valueReset: () -> Unit,
     keyboardType: KeyboardType = KeyboardType.Number,
     imeAction: ImeAction = ImeAction.Next,
     onAction: KeyboardActions = KeyboardActions.Default,
@@ -57,9 +57,7 @@ fun SalaryInputField(
                     .fillMaxWidth()
                     .padding(all = MEDIUM_PADDING),
                 value = inputValueState, // removed.value
-                onValueChange = { newInputVal ->
-                    viewModel.onInputValueChange(newInputVal)
-                },
+                onValueChange = valueChanged,
                 label = { Text(text = labelId) },
                 leadingIcon = {
                     Icon(
@@ -68,9 +66,7 @@ fun SalaryInputField(
                     )
                 },
                 trailingIcon = {
-                    IconButton(
-                        onClick = { viewModel.onResetInputValueChange() }
-                    ) {
+                    IconButton(onClick = valueReset) {
                         Icon(
                             imageVector = Icons.Filled.Close,
                             contentDescription = stringResource(id = R.string.close_icon),
@@ -98,11 +94,11 @@ fun SalaryInputField(
 @Preview(showBackground = true)
 @Composable
 fun SalaryInputFieldPreview() {
-    val taxViewModel = TaxViewModel()
     SalaryInputField(
-        viewModel = taxViewModel,
         inputValueState = "1000",
         labelId = "Enter the salary",
+        valueChanged = {},
+        valueReset = {},
         enabled = true,
         isSingleLine = true,
     )

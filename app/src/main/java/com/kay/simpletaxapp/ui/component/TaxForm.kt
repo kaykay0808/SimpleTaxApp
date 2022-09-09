@@ -30,7 +30,8 @@ fun TaxForm(
     SalaryInputField(
         inputValueState = viewState.totalSalaryAmountState,
         labelId = stringResource(id = R.string.input_field_label),
-        viewModel = taxViewModel,
+        valueChanged = { newInputVal -> taxViewModel.onInputValueChange(newInputVal) },
+        valueReset = { taxViewModel.onResetInputValueChange() },
         enabled = true,
         isSingleLine = true,
         onAction = KeyboardActions {
@@ -44,7 +45,7 @@ fun TaxForm(
     )
     if (validState) {
         TaxSlider(
-            viewModel = taxViewModel,
+            valueChanged = {newVal -> taxViewModel.onSliderValueChange(newVal)},
             sliderPositionState = viewState.sliderPositionState,
         )
     } else {
