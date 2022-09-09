@@ -1,6 +1,5 @@
 package com.kay.simpletaxapp.ui.component
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -43,14 +42,8 @@ fun TaxForm(
         percentage = percentage,
         viewState = viewState
     )
-    if (validState) {
-        TaxSlider(
-            valueChanged = {newVal -> taxViewModel.onSliderValueChange(newVal)},
-            sliderPositionState = viewState.sliderValue,
-        )
-    } else {
-        Box {
-            // show a sad empty box
-        }
-    }
+    TaxSlider(
+        valueChanged = { newVal -> taxViewModel.onSliderValueChange(newVal) },
+        sliderPositionState = viewState.sliderValue,
+    )
 }
