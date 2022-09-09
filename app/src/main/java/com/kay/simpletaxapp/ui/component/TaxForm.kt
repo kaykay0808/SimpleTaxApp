@@ -19,16 +19,16 @@ fun TaxForm(
     percentage: Int,
 ) {
     // Valid state if totalBillState is not empty
-    val validState = remember(viewState.totalSalaryAmountState) {
-        viewState.totalSalaryAmountState.trim()
+    val validState = remember(viewState.netSalaryString) {
+        viewState.netSalaryString.trim()
             .isNotEmpty() /* <- Returns a boolean "if it's not empty it will return true"*/
     }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    IncomeAfterTaxHeader(incomeAfterTax = viewState.totalIncomeAfterTax)
+    IncomeAfterTaxHeader(incomeAfterTax = viewState.incomeAfterTax)
 
     SalaryInputField(
-        inputValueState = viewState.totalSalaryAmountState,
+        inputValueState = viewState.netSalaryString,
         labelId = stringResource(id = R.string.input_field_label),
         valueChanged = { newInputVal -> taxViewModel.onInputValueChange(newInputVal) },
         valueReset = { taxViewModel.onResetInputValueChange() },
@@ -46,7 +46,7 @@ fun TaxForm(
     if (validState) {
         TaxSlider(
             valueChanged = {newVal -> taxViewModel.onSliderValueChange(newVal)},
-            sliderPositionState = viewState.sliderPositionState,
+            sliderPositionState = viewState.sliderValue,
         )
     } else {
         Box {
