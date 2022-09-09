@@ -62,4 +62,11 @@ class TaxViewModel : ViewModel() {
             )
         }
     }
+    fun onResetInputValueChange() {
+        render {
+            copy(
+                totalSalaryAmountState = resetAmountState,
+            )
+        }
+    }
 }

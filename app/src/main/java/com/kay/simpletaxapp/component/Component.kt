@@ -14,12 +14,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Slider
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.rounded.AttachMoney
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -171,6 +173,18 @@ fun SalaryInputField(
                         imageVector = Icons.Rounded.AttachMoney,
                         contentDescription = "Money Icon"
                     )
+                },
+                trailingIcon = {
+                               IconButton(
+                                   onClick = { viewModel.onResetInputValueChange() }
+                               ) {
+                                   Icon(
+                                       imageVector = Icons.Filled.Close,
+                                       contentDescription = stringResource(id = R.string.close_icon),
+                                       tint = MaterialTheme.colors.primary
+                                   )
+                               }
+
                 },
                 textStyle = TextStyle(
                     fontSize = 18.sp,
