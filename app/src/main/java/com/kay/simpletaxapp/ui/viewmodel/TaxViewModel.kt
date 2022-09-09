@@ -4,7 +4,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.kay.simpletaxapp.data.TaxViewState
 import com.kay.simpletaxapp.util.sliderToPercentage
 
 class TaxViewModel : ViewModel() {
