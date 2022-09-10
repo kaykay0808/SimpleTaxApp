@@ -4,26 +4,39 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.kay.simpletaxapp.data.TaxViewState
 import com.kay.simpletaxapp.util.sliderToPercentage
 
 class TaxViewModel : ViewModel() {
     var viewState by mutableStateOf(TaxViewState())
         private set
 
-    private fun render(copy: TaxViewState.() -> TaxViewState) {
-        viewState = copy(viewState)
+    var netSalaryString = ""
+    var netSalary = 0.0
+    var incomeAfterTax = 0.0
+    var taxAmount = 0.0
+    var sliderValue = 0.25f
+
+    private fun render() {
+        val taxPercent = sliderToPercentage(sliderValue)
+        viewState = TaxViewState(
+            netSalaryString = netSalaryString,
+            netSalary = netSalary,
+            incomeAfterTax = calculateSalaryAfterTax(netSalary, taxPercent),
+            taxAmount = calculateTotalTax(netSalary, taxPercent),
+            sliderValue = sliderValue,
+            taxPercentage = taxPercent
+        )
     }
 
     private fun calculateTotalTax(
         totalSalary: Double,
         percentage: Int
     ): Double {
-        return if (
-            totalSalary > 1 && totalSalary.toString().isNotEmpty()
-        )
+        return if (totalSalary > 1 && totalSalary.toString().isNotEmpty()) {
             (totalSalary * percentage) / 100
-        else 0.0
+        } else {
+            0.0
+        }
     }
 
     private fun calculateSalaryAfterTax(
@@ -38,35 +51,22 @@ class TaxViewModel : ViewModel() {
     }
 
     fun onSliderValueChange(newVal: Float) {
-        val taxPay = calculateTotalTax(
-            totalSalary = viewState.totalSalaryAmountState.toDouble(),
-            percentage = sliderToPercentage(newVal)
-        )
-        val salaryAfterTax = calculateSalaryAfterTax(
-            totalSalary = viewState.totalSalaryAmountState.toDouble(),
-            percentage = sliderToPercentage(newVal)
-        )
-        render {
-            copy(
-                totalIncomeAfterTax = salaryAfterTax,
-                taxAmountState = taxPay,
-                sliderPositionState = newVal,
-            )
-        }
+        sliderValue = newVal
+        render()
     }
 
     fun onInputValueChange(newInputVal: String) {
-        render {
-            copy(
-                totalSalaryAmountState = newInputVal,
-            )
-        }
+        netSalaryString = newInputVal
+        netSalary = newInputVal.toDoubleOrNull() ?: 0.0
+        render()
     }
+
     fun onResetInputValueChange() {
-        render {
-            copy(
-                totalSalaryAmountState = resetAmountState,
-            )
-        }
+        netSalaryString = ""
+        netSalary = 0.0
+        incomeAfterTax = 0.0
+        taxAmount = 0.0
+        sliderValue = 0.25f
+        render()
     }
 }
