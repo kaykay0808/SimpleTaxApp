@@ -10,7 +10,7 @@ import com.kay.simpletaxapp.ui.viewmodel.TaxViewModel
 import com.kay.simpletaxapp.util.sliderToPercentage
 
 @Composable
-fun MainContent(taxViewModel: TaxViewModel) {
+fun MainScreen(taxViewModel: TaxViewModel) {
 
     val viewState = taxViewModel.viewState
     val sliderPercentage = sliderToPercentage(viewState.sliderPositionState)
@@ -19,11 +19,11 @@ fun MainContent(taxViewModel: TaxViewModel) {
         TaxForm(
             taxViewModel = taxViewModel,
             viewState = viewState,
-            sliderPositionState = viewState.sliderPositionState,
+            // sliderPositionState = viewState.sliderPositionState,
             percentage = sliderPercentage
             // totalSalaryAmountState = viewState.totalSalaryAmountState,
             // totalIncomeAfterTax = viewState.totalIncomeAfterTax,
             // taxPay = viewState.taxAmountState,
-        ) {}
+        ) // {}
     }
 }

@@ -1,4 +1,4 @@
-package com.kay.simpletaxapp.data
+package com.kay.simpletaxapp.ui.viewmodel
 
 data class TaxViewState(
     val totalSalaryAmountState: String = "", // InputField/Net
