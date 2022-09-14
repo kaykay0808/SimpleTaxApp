@@ -7,19 +7,18 @@ import androidx.compose.ui.Modifier
 import com.kay.simpletaxapp.component.TaxForm
 import com.kay.simpletaxapp.ui.theme.LARGE_PADDING
 import com.kay.simpletaxapp.ui.viewmodel.TaxViewModel
-import com.kay.simpletaxapp.util.sliderToPercentage
 
 @Composable
 fun MainScreen(taxViewModel: TaxViewModel) {
 
     val viewState = taxViewModel.viewState
-    val sliderPercentage = sliderToPercentage(viewState.sliderValue)
+    // val sliderPercentage = sliderToPercentage(viewState.sliderValue)
 
     Column(modifier = Modifier.padding(all = LARGE_PADDING)) {
         TaxForm(
             taxViewModel = taxViewModel,
             viewState = viewState,
-            percentage = sliderPercentage
+            // percentage = sliderPercentage
             // sliderPositionState = viewState.sliderPositionState,
             // totalSalaryAmountState = viewState.totalSalaryAmountState,
             // totalIncomeAfterTax = viewState.totalIncomeAfterTax,

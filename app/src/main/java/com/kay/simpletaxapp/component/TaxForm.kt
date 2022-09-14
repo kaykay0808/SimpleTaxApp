@@ -1,6 +1,5 @@
 package com.kay.simpletaxapp.component
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -17,7 +16,7 @@ fun TaxForm(
     // modifier: Modifier = Modifier,
     viewState: TaxViewState,
     taxViewModel: TaxViewModel,
-    percentage: Int,
+    // percentage: Int,
     // sliderPositionState: Float,
     // onValChange: (String) -> Unit
 ) {
@@ -45,10 +44,7 @@ fun TaxForm(
             keyboardController?.hide()
         }
     )
-    TaxInfo(
-        percentage = percentage,
-        viewState = viewState
-    )
+    TaxInfo(viewState = viewState)
     TaxSlider(
         // viewModel = taxViewModel,
         valueChanged = { newVal -> taxViewModel.onSliderValueChange(newVal) },

@@ -19,7 +19,7 @@ fun TaxSlider(
     ) {
         Slider(
             value = sliderPositionState,
-            onValueChange = valueChanged //{ newVal -> viewModel.onSliderValueChange(newVal) }
+            onValueChange = valueChanged // { newVal -> viewModel.onSliderValueChange(newVal) }
         )
     }
 }

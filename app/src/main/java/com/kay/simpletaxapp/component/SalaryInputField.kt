@@ -63,7 +63,7 @@ fun SalaryInputField(
                     .fillMaxWidth()
                     .padding(all = MEDIUM_PADDING),
                 value = inputValueState, // removed.value
-                onValueChange = valueChanged, //{ newInputVal -> viewModel.onInputValueChange(newInputVal) },
+                onValueChange = valueChanged, // { newInputVal -> viewModel.onInputValueChange(newInputVal) },
                 label = { Text(text = labelId) },
                 leadingIcon = {
                     Icon(
@@ -81,7 +81,6 @@ fun SalaryInputField(
                             tint = MaterialTheme.colors.primary
                         )
                     }
-
                 },
                 textStyle = TextStyle(
                     fontSize = 18.sp,

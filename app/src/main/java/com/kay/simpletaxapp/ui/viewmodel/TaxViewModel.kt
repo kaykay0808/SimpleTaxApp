@@ -10,8 +10,28 @@ class TaxViewModel : ViewModel() {
     var viewState by mutableStateOf(TaxViewState())
         private set
 
-    private fun render(copy: TaxViewState.() -> TaxViewState) {
-        viewState = copy(viewState)
+    private var netSalaryString = ""
+    private var netSalaryDouble = 0.0
+    private var incomeAfterTax = 0.0
+    private var taxAmount = 0.0
+    private var sliderValue = 0.25f
+
+    private fun render(/*copy: TaxViewState.() -> TaxViewState*/) {
+        val taxPercentage = sliderToPercentage(sliderValue)
+        viewState = /*copy(viewState)*/ TaxViewState(
+            netSalaryString = netSalaryString,
+            netSalaryDouble = netSalaryDouble,
+            incomeAfterTax = calculateSalaryAfterTax(
+                totalSalary = netSalaryDouble,
+                percentage = taxPercentage
+            ),
+            taxAmount = calculateTotalTax(
+                totalSalary = netSalaryDouble,
+                percentage = taxPercentage
+            ),
+            sliderValue = sliderValue,
+            taxPercentage = taxPercentage
+        )
     }
 
     private fun calculateTotalTax(
@@ -37,36 +57,30 @@ class TaxViewModel : ViewModel() {
     }
 
     fun onSliderValueChange(newVal: Float) {
-        val taxPay = calculateTotalTax(
+        /*val taxPay = calculateTotalTax(
             totalSalary = viewState.netSalaryDouble, // viewState.netSalaryString.toDouble(),
             percentage = sliderToPercentage(newVal)
         )
         val salaryAfterTax = calculateSalaryAfterTax(
             totalSalary = viewState.netSalaryDouble, // viewState.netSalaryString.toDouble(),
             percentage = sliderToPercentage(newVal)
-        )
-        render {
-            copy(
-                incomeAfterTax = salaryAfterTax,
-                taxAmount = taxPay,
-                sliderValue = newVal,
-            )
-        }
+        )*/
+        sliderValue = newVal
+        render()
     }
 
     fun onInputValueChange(newInputVal: String) {
-        render {
-            copy(
-                netSalaryString = newInputVal,
-                netSalaryDouble = newInputVal.toDoubleOrNull()?: 0.0 // <- Ask about this later.
-            )
-        }
+        netSalaryString = newInputVal
+        netSalaryDouble = newInputVal.toDoubleOrNull() ?: 0.0 // <- Ask about this later.
+        render()
     }
 
     fun onResetInputValueChange() {
-        render {
-            TaxViewState()
-            /*copy(netSalaryString = "",)*/
-        }
+        netSalaryString = ""
+        netSalaryDouble = 0.0
+        incomeAfterTax = 0.0
+        taxAmount = 0.0
+        sliderValue = 0.25f
+        render()
     }
 }
