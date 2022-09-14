@@ -49,15 +49,15 @@ fun TaxForm(
         percentage = percentage,
         viewState = viewState
     )
-    if (validState) {
-        TaxSlider(
-            // viewModel = taxViewModel,
-            valueChanged = { newVal -> taxViewModel.onSliderValueChange(newVal) },
-            sliderPositionState = viewState.sliderValue,
-        )
+    TaxSlider(
+        // viewModel = taxViewModel,
+        valueChanged = { newVal -> taxViewModel.onSliderValueChange(newVal) },
+        sliderPositionState = viewState.sliderValue,
+    )
+    /*if (validState) {
     } else {
         Box {
             // show a sad empty box
         }
-    }
+    }*/
 }

@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.kay.simpletaxapp.ui.theme.MEDIUM_PADDING
 import com.kay.simpletaxapp.ui.viewmodel.TaxViewModel
 import com.kay.simpletaxapp.ui.viewmodel.TaxViewState
+import com.kay.simpletaxapp.util.formatCurrency
 
 @Composable
 fun TaxInfo(
@@ -50,7 +51,7 @@ fun TaxInfo(
         ) {
             Text(
                 modifier = modifier.weight(1f),
-                text = "$ ${viewState.taxAmount}",
+                text = formatCurrency(viewState.taxAmount), // "$ ${viewState.taxAmount}",
                 textAlign = TextAlign.Center
             )
             Text(
@@ -60,7 +61,7 @@ fun TaxInfo(
             )
             Text(
                 modifier = modifier.weight(1f),
-                text = "${viewState.netSalaryString} -",
+                text = formatCurrency(viewState.netSalaryDouble),//"${viewState.netSalaryString} -",
                 textAlign = TextAlign.Center
             )
         }

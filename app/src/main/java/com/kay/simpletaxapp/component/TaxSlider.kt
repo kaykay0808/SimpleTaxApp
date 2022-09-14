@@ -30,6 +30,6 @@ fun TaxSliderPreview() {
     TaxSlider(
         // viewModel = taxViewModel,
         valueChanged = {},
-        sliderPositionState = 0.50f
+        sliderPositionState = .50f
     )
 }
