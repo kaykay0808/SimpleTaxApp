@@ -18,11 +18,11 @@ class TaxViewModel : ViewModel() {
         totalSalary: Double,
         percentage: Int
     ): Double {
-        return if (
-            totalSalary > 1 && totalSalary.toString().isNotEmpty()
-        )
+        return if (totalSalary > 1 && totalSalary.toString().isNotEmpty()) {
             (totalSalary * percentage) / 100
-        else 0.0
+        } else {
+            0.0
+        }
     }
 
     private fun calculateSalaryAfterTax(
@@ -38,18 +38,18 @@ class TaxViewModel : ViewModel() {
 
     fun onSliderValueChange(newVal: Float) {
         val taxPay = calculateTotalTax(
-            totalSalary = viewState.totalSalaryAmountState.toDouble(),
+            totalSalary = viewState.netSalaryString.toDouble(),
             percentage = sliderToPercentage(newVal)
         )
         val salaryAfterTax = calculateSalaryAfterTax(
-            totalSalary = viewState.totalSalaryAmountState.toDouble(),
+            totalSalary = viewState.netSalaryString.toDouble(),
             percentage = sliderToPercentage(newVal)
         )
         render {
             copy(
-                totalIncomeAfterTax = salaryAfterTax,
-                taxAmountState = taxPay,
-                sliderPositionState = newVal,
+                incomeAfterTax = salaryAfterTax,
+                taxAmount = taxPay,
+                sliderValue = newVal,
             )
         }
     }
@@ -57,14 +57,15 @@ class TaxViewModel : ViewModel() {
     fun onInputValueChange(newInputVal: String) {
         render {
             copy(
-                totalSalaryAmountState = newInputVal,
+                netSalaryString = newInputVal,
             )
         }
     }
+
     fun onResetInputValueChange() {
         render {
             copy(
-                totalSalaryAmountState = resetAmountState,
+                netSalaryString = "",
             )
         }
     }

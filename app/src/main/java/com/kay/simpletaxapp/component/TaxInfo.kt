@@ -50,7 +50,7 @@ fun TaxInfo(
         ) {
             Text(
                 modifier = modifier.weight(1f),
-                text = "$ ${viewState.taxAmountState}",
+                text = "$ ${viewState.taxAmount}",
                 textAlign = TextAlign.Center
             )
             Text(
@@ -60,7 +60,7 @@ fun TaxInfo(
             )
             Text(
                 modifier = modifier.weight(1f),
-                text = "${viewState.totalSalaryAmountState} -",
+                text = "${viewState.netSalaryString} -",
                 textAlign = TextAlign.Center
             )
         }
