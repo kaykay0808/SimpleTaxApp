@@ -1,5 +1,6 @@
 package com.kay.simpletaxapp.component
 
+import android.inputmethodservice.Keyboard
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,7 @@ import com.kay.simpletaxapp.ui.theme.MEDIUM_PADDING
 import com.kay.simpletaxapp.ui.viewmodel.TaxViewModel
 import com.kay.simpletaxapp.ui.viewmodel.TaxViewState
 import com.kay.simpletaxapp.util.formatCurrency
+import org.w3c.dom.Text
 
 @Composable
 fun TaxInfo(
@@ -73,5 +75,5 @@ fun TaxInfo(
 fun TaxInfoPreview() {
     val taxViewModel = TaxViewModel()
     val viewState = taxViewModel.viewState
-    TaxInfo(viewState = viewState,)
+    TaxInfo(viewState = viewState)
 }

@@ -13,9 +13,9 @@ import com.kay.simpletaxapp.ui.viewmodel.TaxViewState
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun TaxForm(
-    // modifier: Modifier = Modifier,
     viewState: TaxViewState,
     taxViewModel: TaxViewModel,
+    // modifier: Modifier = Modifier,
     // percentage: Int,
     // sliderPositionState: Float,
     // onValChange: (String) -> Unit

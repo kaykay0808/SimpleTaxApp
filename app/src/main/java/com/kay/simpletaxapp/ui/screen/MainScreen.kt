@@ -10,7 +10,6 @@ import com.kay.simpletaxapp.ui.viewmodel.TaxViewModel
 
 @Composable
 fun MainScreen(taxViewModel: TaxViewModel) {
-
     val viewState = taxViewModel.viewState
     // val sliderPercentage = sliderToPercentage(viewState.sliderValue)
 
