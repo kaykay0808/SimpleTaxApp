@@ -32,7 +32,6 @@ fun TaxForm(
     SalaryInputField(
         inputValueState = viewState.netSalaryString,
         labelId = stringResource(id = R.string.input_field_label),
-        // viewModel = taxViewModel,
         valueChanged = { newInputVal -> taxViewModel.onInputValueChange(newInputVal) },
         valueReset = { taxViewModel.onResetInputValueChange() },
         enabled = true,
